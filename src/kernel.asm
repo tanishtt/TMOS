@@ -1,4 +1,4 @@
-[BITS 32]
+BITS 32
 
 global _start
 extern kernel_main
@@ -16,7 +16,7 @@ _start:
     mov ebp, 0x00200000
     mov esp, ebp
 
-    ; Enable the A20 line
+    ; Enable the A20 line;The A20 line (Address line 20) is used to control memory addressing in protected mode and is separate from the regular address bus. When the A20 line is enabled, it allows the CPU to access memory beyond the 1 MB limit. When it's disabled, memory access is limited to the first 1 MB.
     in al, 0x92
     or al, 2
     out 0x92, al

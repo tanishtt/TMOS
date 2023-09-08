@@ -1,17 +1,18 @@
 ORG 0x7c00
 BITS 16
 
-    cli
-    mov ax, 0x07C0
-    mov ds, ax
- ; BPB (Bios Parameter Block) starts here
+
 _start:
+    ; cli
+    ; mov ax, 0x07C0
+    ; mov ds, ax
+    ; BPB (Bios Parameter Block) starts here
     jmp short skip_bpb_to_start ;3 bytes [7C00+0x00]
     nop
     
 ; OEM Identifier (8 bytes)
 oem_identifier:     ; The first 8 Bytes (3 - 10) is the version of DOS being used.
-    db 'MSWIN4.1'   ; Default value recommended by Microsoft
+    db 'TM----OS'   ; Default value recommended by Microsoft
 
 bytes_per_sector:       ; Offset 0x0B;512 sector(value)
     dw 512              ; 2 bytes per sector (Little-endian format)
@@ -90,7 +91,7 @@ step2:
     mov ecx, 100        ;number of sector
     mov edi, 0x0100000  ;points to memory where data will be stored after reading.
     call ata_lba_read
-    jmp CODE_SEG:0x0100000
+    jmp CODE_SEG:0x0100000;of code segment , offset 0x0100000,which will in total 00100000 in RAM as cs=0 in gdt.
 
 %include "disk.asm"
 
