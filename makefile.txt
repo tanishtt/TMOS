@@ -1,0 +1,34 @@
+If confused with symbols, read this...
+
+1. $@ - Target
+   - $@ represents the target of the rule, which is the file that you are trying to build. It is often used on the left side of a rule to specify the output file.
+   - Example:
+     
+     all: program
+
+     program: main.c
+         gcc -o $@ $<
+     
+     In this example, $@ refers to the target program, and it is used to specify the output file when compiling main.c.
+
+2. $< - First Prerequisite
+   - $< represents the first prerequisite of the rule, which is the first file listed after the: in the rule. It is used to reference the first input file.
+   - Example:
+     
+     all: program
+
+     program: main.c
+         gcc -o $@ $<
+     
+     In this example, $< refers to main.c, which is the first prerequisite of the program target.
+
+3. $^ - All Prerequisites
+   - $^ represents all the prerequisites of the rule, which are all the files listed after the : in the rule. It is used to reference all input files.
+   - Example:
+     
+     all: program
+
+     program: main.c utils.c
+         gcc -o $@ $^
+     
+     In this example, $^ refers to both main.c and utils.c, which are all the prerequisites of the program target.

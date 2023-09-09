@@ -1,8 +1,7 @@
 ORG 0x7c00
 BITS 16
 
-
-_start:
+start:
     ; cli
     ; mov ax, 0x07C0
     ; mov ds, ax
@@ -80,7 +79,7 @@ step2:
     ;CODE_SEG is defined as the offset of the code segment descriptor in your GDT.
     ;load32 is a label within the 32-bit code segment (a 32-bit code segment defined in the GDT).
 ;GDT
-%include "gdt.asm"
+%include "src/AUB_Bootloader/gdt.asm"
 
 
  [BITS 32]
@@ -93,7 +92,7 @@ step2:
     call ata_lba_read
     jmp CODE_SEG:0x0100000;of code segment , offset 0x0100000,which will in total 00100000 in RAM as cs=0 in gdt.
 
-%include "disk.asm"
+%include "src/AUB_Bootloader/disk.asm"
 
 times 510-($ - $$) db 0
 dw 0xAA55
