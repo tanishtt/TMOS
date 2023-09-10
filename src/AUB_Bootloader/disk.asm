@@ -58,7 +58,7 @@ ata_lba_read:
     ; We need to read 256 words at a time
     mov ecx, 256
     mov dx, 0x1F0;The 0x1F0 I/O port is used to read data from the hard disk.
-    rep insw ;this will run 256 times
+    rep insw ;this will run 256 times; input word from i/o port specified in dx into memory location specified by es:di
     pop ecx;this will run 100 times, ecx-- => 100->99
     loop .next_sector
         ; End of reading sectors into memory
