@@ -3,7 +3,7 @@
 #include <stdint.h>
 
 
-uint16_t* video_mem = 0;
+uint16_t* video_mem = NULL;
 uint16_t terminal_row = 0;
 uint16_t terminal_col = 0;
 
@@ -12,21 +12,21 @@ uint16_t terminal_make_char(char c, char colour)
     return (colour << 8) | c;
 }
 
-void terminal_putchar(int x, int y, char c, char colour)
+void terminal_putchar(int x, int y, char ch, char colour)
 {
-    video_mem[(y * VGA_WIDTH) + x] = terminal_make_char(c, colour);
+    video_mem[(y * VGA_WIDTH) + x] = terminal_make_char(ch, colour);
 }
 
-void terminal_writechar(char c, char colour)
+void terminal_writechar(char ch, char colour)
 {
-    if (c == '\n')
+    if (ch == '\n')
     {
         terminal_row += 1;
         terminal_col = 0;
         return;
     }
     
-    terminal_putchar(terminal_col, terminal_row, c, colour);
+    terminal_putchar(terminal_col, terminal_row, ch, colour);
     terminal_col += 1;
     if (terminal_col >= VGA_WIDTH)
     {
@@ -73,4 +73,10 @@ void kernel_main()
 {
     terminal_initialize();
     print("Hello world!\ntest");
+    int i=27;
+    while(i>0)
+    {
+        i--;
+        print("Hello world!\ntest");
+    }
 }
