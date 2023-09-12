@@ -1,4 +1,5 @@
 #include "memory.h"
+
 /////////////////////////
 void* memset(void* ptr, int ch, size_t size)
 {

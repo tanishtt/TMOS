@@ -19,4 +19,8 @@ struct idtr_
     uint32_t base;//base address of the start of the idt in memory
 }__attribute__((packed));
 
+
+void idt_init();
+
+
 #endif
