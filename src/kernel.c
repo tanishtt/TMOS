@@ -73,10 +73,5 @@ void kernel_main()
 {
     terminal_initialize();
     print("Hello world!\ntest");
-    int i=27;
-    while(i>0)
-    {
-        i--;
-        print("Hello world!\ntest");
-    }
+    
 }
