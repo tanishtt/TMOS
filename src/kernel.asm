@@ -1,7 +1,6 @@
 BITS 32
 
 global _start
-global problem_
 
 extern kernel_main
 
@@ -27,7 +26,5 @@ _start:
 
     jmp $
 
-problem_:
-    mov eax, 0
-    div eax
+
 times 512-($ - $$) db 0

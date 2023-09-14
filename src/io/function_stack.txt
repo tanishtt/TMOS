@@ -1,0 +1,12 @@
+In this function, port is a parameter, and when the function is called, its value will be pushed onto the stack. 
+The ebp register is often used as a frame pointer, and it points to the base of the function's stack frame. The ebp register is typically set up by the function prologue.
+
+The function insb is called, and port is passed as an argument.
+The function prologue sets up the stack frame and saves the previous value of ebp on the stack.
+The ebp register is set to the current value of esp, establishing a frame pointer.
+The function parameter port is pushed onto the stack.
+Here,[ebp+8] refers to the location of the port parameter within the function's stack frame:
+
+[ebp] refers to the saved previous ebp value (typically 4 bytes).
+[ebp+4] refers to the return address (typically 4 bytes).
+[ebp+8] refers to the port parameter (typically 2 bytes for an unsigned short).

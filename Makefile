@@ -1,4 +1,4 @@
-FILES = ./build/kernel.o ./build/kernel.c.o ./build/idt/idt.asm.o ./build/idt/idt.o ./build/memory/memory.o
+FILES = ./build/kernel.o ./build/kernel.c.o ./build/idt/idt.asm.o ./build/idt/idt.o ./build/memory/memory.o ./build/io/io.asm.o
 INCLUDES = -I./src
 FLAGS = -g -ffreestanding -falign-jumps -falign-functions -falign-loops -fstrength-reduce -fomit-frame-pointer -finline-functions -Wno-unused-function -fno-builtin -Werror -Wno-unused-label -Wno-cpp -Wno-unused-parameter -nostdlib -nostartfiles -nodefaultlibs -Wall -O0 -Iinc 
 
@@ -45,7 +45,12 @@ all: ./bin/boot.bin ./bin/kernel.bin $(FILES)
 
 
 #.....idt end here.
+#.....io
 
+./build/io/io.asm.o: ./src/io/io.asm
+	nasm -f elf -g ./src/io/io.asm -o ./build/io/io.asm.o
+
+#.....io ends here
 ./build/kernel.o: ./src/kernel.asm
 	nasm -f elf -g ./src/kernel.asm -o ./build/kernel.o
 
