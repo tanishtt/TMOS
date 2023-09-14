@@ -2,17 +2,29 @@
 #include "config.h"
 #include "memory/memory.h"
 #include "kernel.h"
-
+#include "io/io.h"
 
 struct idt_descriptor idt_decriptors[TOTAL_INTERRUPTS];
 struct idtr_ idtr;
 
 extern void idt_load(struct idtr_* ptr);
-
+extern void int21h();
+extern void no_interrupt();
+/////////
 void idt_zero()
 {
     print("Oops!!, Divide by zero error.\n");
 }
+void int21h_handler()
+{
+    print("Keyboard pressed...");
+    outb(0x20,0x20);
+}
+void no_interrupt_handler()
+{
+    outb(0x20,0x20);
+}
+//////////
 void  idt_set(int interrupt_no, void* address)
 {
     struct idt_descriptor *idt_ptr =&idt_decriptors[interrupt_no];
@@ -29,8 +41,12 @@ void idt_init()
     idtr.limit = sizeof(idt_decriptors)-1;
     idtr.base =(uint32_t)idt_decriptors;
 
+    for(int i=0;i< TOTAL_INTERRUPTS;i++)
+    {
+        idt_set(i,no_interrupt);
+    }
     idt_set(0, idt_zero);
-    
+    idt_set(0x21,int21h);
     //load the interrupt descriptor table.
     idt_load(&idtr);
 }

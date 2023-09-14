@@ -10,7 +10,6 @@ insb:
     push ebp
     mov ebp, esp
 
-
     xor eax,eax
     mov edx,[ebp+8]
     in al,dx
@@ -42,7 +41,7 @@ outb:
 
 outw:
     push ebp
-    move ebp, esp
+    mov ebp, esp
 
     mov eax,[ebp+12]
     mov edx,[ebp+8]

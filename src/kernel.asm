@@ -42,6 +42,8 @@ _start:
 
     ; End of remap of the master PIC
 
+    ;enable interrupts
+    sti
 
     call kernel_main
 

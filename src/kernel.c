@@ -74,5 +74,5 @@ void kernel_main()
 {
     terminal_initialize();
     idt_init();
-    print("\n->in kernel.c\ntesting\n");
+    print("\n->in kernel.c\n->testing\n");
 }
