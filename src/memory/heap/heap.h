@@ -1,8 +1,9 @@
 #ifndef HEAP_H
 #define HEAP_H
+
 #include "config.h"
-#include<stdint.h>
-#include<stddef.h>
+#include <stdint.h>
+#include <stddef.h>
 
 
 #define HEAP_BLOCK_TABLE_ENTRY_TAKEN 0x01
@@ -11,6 +12,22 @@
 #define HEAP_BLOCK_HAS_NEXT 0b10000000
 #define HEAP_BLOCK_IS_FIRST 0b01000000
 
+typedef unsigned char HEAP_BLOCK_TABLE_ENTRY;//each entry which is 8 bits.
+
+struct heap_table
+{
+    HEAP_BLOCK_TABLE_ENTRY* entries;//starting address of heap entry table.
+    size_t total;//25600 entries
+};
+
+struct heap//100MB heap data pool
+{
+    struct heap_table* table;
+    void* saddr;//start address of heap data pool.
+};
+
+//////////
+int heap_create(struct heap* heap, void* ptr, void* end, struct heap_table* table);
 
 
 #endif
