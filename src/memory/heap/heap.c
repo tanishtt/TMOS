@@ -166,9 +166,32 @@ void* heap_malloc(struct heap* heap, size_t size)
 
     return heap_malloc_blocks(heap, total_blocks);   
 }
+
 //heap free
+
+int heap_address_to_block(struct heap* heap, void* address)
+{
+    return ((int)(address - heap->saddr ))/ HEAP_BLOCK_SIZE;
+    //return index number in heap entry table from which we have to delete. 
+}
+//deallocating by doing 0x00 in heap entry table;
+void heap_mark_blocks_free(struct heap* heap, int starting_block)
+{
+    struct heap_table* table= heap->table;
+    for(int i= starting_block; i<(int)table->total; i++)
+    {
+        HEAP_BLOCK_TABLE_ENTRY entry = table->entries[i];
+        table->entries[i]=HEAP_BLOCK_TABLE_ENTRY_FREE;
+        if(!(entry & HEAP_BLOCK_HAS_NEXT))
+        {
+            break;
+        }
+    }
+}
+
+//main heap free
 void heap_free(struct heap* heap,void* ptr)
 {
-    
+    heap_mark_blocks_free(heap, heap_address_to_block(heap, ptr));    
 }
 

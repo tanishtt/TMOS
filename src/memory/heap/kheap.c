@@ -22,7 +22,15 @@ void kheap_init()
     }
 }
 
+void* kmalloc(size_t size)
+{
+    return heap_malloc(&kernel_heap, size);
+}
 
+void kfree(void* ptr)
+{
+    return heap_free(&kernel_heap, ptr);
+}
 
 
 
