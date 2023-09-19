@@ -1,5 +1,12 @@
 #include "io/io.h"
 #include "disk.h"
+#include "memory/memory.h"
+#include "config.h"
+#include "status.h"
+
+
+//represent primary hd.
+struct disk disk;
 
 int disk_read_sector(int lba, int total, void* buffer)
 {
@@ -28,4 +35,20 @@ int disk_read_sector(int lba, int total, void* buffer)
         }
     }
     return 0;
+}
+
+void disk_search_and_init()
+{
+    memset(&disk, 0, sizeof(disk));
+    disk.type= DISK_TYPE_REAL;
+    disk.sector_size= SECTOR_SIZE;
+}
+
+struct disk* disk_get(int index)
+{
+    if(index!= 0)
+    {
+        return 0;
+    }
+    return &disk;
 }
