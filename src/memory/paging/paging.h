@@ -26,4 +26,9 @@ uint32_t* paging_4GB_chunk_get_directory(struct paging_4GB_chunk* chunk);
 void paging_switch(uint32_t* directory);
 void enable_paging();
 
+
+bool paging_is_aligned(void* addr);
+int paging_set(uint32_t* directory, void* virtAddr, uint32_t val);
+
+
 #endif

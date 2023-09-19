@@ -54,7 +54,7 @@ bool paging_is_aligned(void* addr)
 {
     return((uint32_t)addr % PAGING_PAGE_SIZE)==0;
 }
-int paging_get_indexex(void* virtual_address, uint32_t* directory_index_out, uint32_t* table_index_out)
+int paging_get_indexes(void* virtual_address, uint32_t* directory_index_out, uint32_t* table_index_out)
 {
     int res=0;
     if(!paging_is_aligned(virtual_address))
@@ -70,6 +70,29 @@ int paging_get_indexex(void* virtual_address, uint32_t* directory_index_out, uin
     *table_index_out = (((uint32_t) virtual_address %(PAGING_TOTAL_ENTRIES_PER_TABLE * PAGING_PAGE_SIZE))/ PAGING_PAGE_SIZE);
     
 out:
+    return res;
+}
+
+int paging_set(uint32_t* directory, void* virtAddr, uint32_t val)
+{
+    if(!paging_is_aligned(virtAddr))
+    {
+        return -EINVARG;
+    }
+
+    uint32_t directory_index= 0;
+    uint32_t table_index= 0;
+    int res= paging_get_indexes(virtAddr, &directory_index, &table_index);
+    if(res< 0)
+    {
+        return res;
+    }
+
+    uint32_t entry =directory[directory_index];
+    uint32_t* table= (uint32_t*)(entry & 0xfffff000);//get the first 20 bits which contains the address of page table.
+    table[table_index] =val;//val=physical address+flags(32 bit).
+
+    return 0;
 }
 
 

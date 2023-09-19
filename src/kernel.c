@@ -94,6 +94,17 @@ void kernel_main()
     //put address of page table directory table in cr3.
     //switch to kernel paging.
 
+    char* ptr= kzalloc(4096);
+    paging_set(paging_4GB_chunk_get_directory(kernel_chunk), (void*) 0x1000, (uint32_t)ptr |PAGING_ACCESS_FROM_ALL| PAGING_IS_WRITABLE| PAGING_WRITE_THROUGH);
+
+    char* ptr2 =(char*)0x1000;
+    ptr2[0]='a';
+    ptr2[1]='b';
+    print(ptr2);
+
+    print(ptr);
+
+
     enable_paging();
     //enable paging.
 
