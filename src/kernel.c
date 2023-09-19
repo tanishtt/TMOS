@@ -4,7 +4,7 @@
 #include "idt/idt.h"
 #include "io/io.h"
 #include "memory/heap/kheap.h"
-
+#include "memory/paging/paging.h"
 
 
 uint16_t* video_mem = NULL;
@@ -73,6 +73,9 @@ void print(const char* str)
     }
 }
 
+
+static struct paging_4GB_chunk* kernel_chunk =0;
+
 void kernel_main()
 {
     terminal_initialize();
@@ -83,19 +86,30 @@ void kernel_main()
     idt_init();
     print("\n->in kernel.c\n->idt initialized\n");
     
+    kernel_chunk =paging_new_4GB(PAGING_IS_WRITABLE |PAGING_IS_PRESENT |PAGING_ACCESS_FROM_ALL);
+    print("\n->in kernel.c\n->paging setup\n");
+    //setting up paging
+
+    paging_switch(paging_4GB_chunk_get_directory(kernel_chunk));
+    //put address of page table directory table in cr3.
+    //switch to kernel paging.
+
+    enable_paging();
+    //enable paging.
+
     //enable the system interrupts
     enable_interrupts();
 
 
-    void* ptr=kmalloc(50);//0x1000000
-    void* ptr2=kmalloc(5000);//0x1001000
-    void* ptr3=kmalloc(5746);//0x1003000
-    kfree(ptr);
-    void* ptr4=kmalloc(34);//0x1000000
-    //testing...
-    if(ptr2||ptr||ptr3||ptr4)
-    {
+    // void* ptr=kmalloc(50);//0x1000000
+    // void* ptr2=kmalloc(5000);//0x1001000
+    // void* ptr3=kmalloc(5746);//0x1003000
+    // kfree(ptr);
+    // void* ptr4=kmalloc(34);//0x1000000
+    // //testing...
+    // if(ptr2||ptr||ptr3||ptr4)
+    // {
 
-    }
+    // }
 
 }
