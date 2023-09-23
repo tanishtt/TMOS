@@ -11,7 +11,7 @@ start:
     
 ; OEM Identifier (8 bytes)
 oem_identifier:     ; The first 8 Bytes (3 - 10) is the version of DOS being used.
-    db 'TM----OS'   ; Default value recommended by Microsoft
+    db 'TMOS    '   ; Default value recommended by Microsoft
 
 bytes_per_sector:       ; Offset 0x0B;512 sector(value)
     dw 512              ; 2 bytes per sector (Little-endian format)
