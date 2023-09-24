@@ -8,7 +8,7 @@
 #include "disk/disk.h"
 #include "fs/pparser.h"
 #include "string/string.h"
-
+#include "disk/streamer.h"
 
 
 uint16_t* video_mem = NULL;
@@ -86,6 +86,9 @@ void kernel_main()
 
     kheap_init();
     print("\n->in kernel.c\n->heap initialized\n");
+
+    //search and initialize the disk
+    disk_search_and_init();
 
     idt_init();
     print("\n->in kernel.c\n->idt initialized\n");
