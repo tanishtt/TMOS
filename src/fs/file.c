@@ -5,6 +5,9 @@
 #include "memory/heap/kheap.h"
 #include "string/string.h"
 #include "kernel.h"
+#include "fat/fat16.h"
+
+
 
 struct filesystem* filesystems[MAX_FILESYSTEMS];
 struct file_descriptor* file_descriptors[MAX_FILE_DESCRIPTORS];
@@ -39,7 +42,8 @@ void fs_insert_filesystem(struct filesystem* filesystem)
 
 static void fs_static_load()
 {
-
+    //here you can any file system you want, here we uploading fat16.
+    fs_insert_filesystem(fat16_init());
 }
 
 void fs_load()
@@ -87,7 +91,7 @@ struct filesystem* fs_resolve(struct disk* disk)
     struct filesystem* fs=0;
     for(int i=0;i< MAX_FILESYSTEMS; i++)
     {
-        if(filesystems[i] !=0 && filesystems[i]->resolve(disk) ==0)
+        if(filesystems[i] !=0 && filesystems[i]->resolve(disk) ==0)//means it can manage the disk, as it has file system type of his.
         {
             fs= filesystems[i];
             break;
