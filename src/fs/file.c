@@ -157,7 +157,28 @@ int fopen(const char* filename, const char* mode_str)
     }
 
     void* descriptor_private_data = disk->filesystem->open(disk, root_path->first, mode);
+    if(ISERR(descriptor_private_data))
+    {
+        res= ERROR_I(descriptor_private_data);
+        goto out;
+    }
+
+    struct file_descriptor* desc =0;
+    res= file_new_descriptor(&desc);
+    if(res<0)
+    {
+        goto out;
+    }
+    desc->filesystem= disk->filesystem;
+    desc->private= descriptor_private_data;
+    desc->disk=  disk;
+    res= desc->index;
+
 
 out:
+    if(res<0)
+    {//fopen should not return negative values.
+        res=0;
+    }
     return res;
 }
