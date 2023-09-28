@@ -27,5 +27,29 @@ struct disk;
 typedef void*(*FS_OPEN_FUNCTION)(struct disk* disk, struct path_part* path, FILE_MODE mode);
 typedef int (*FS_RESOLVE_FUNCTION)(struct disk* disk);
 
+struct filesystem
+{
+    //filesystem should return zero from resolve, if the provided disk is using its filesystem.
+
+    FS_RESOLVE_FUNCTION resolve;
+    FS_OPEN_FUNCTION open;
+
+    char name[20];//name of file system.
+};
+
+struct file_descriptor
+{
+    //descriptor index.
+    int index;
+    struct filesystem* filesystem;
+    void* private;// private data for internal filesystem.
+    struct disk* disk;//disk that the filesystem will use.
+};
+
+
+void fs_init();
+int fopen(const char* filename, const char* mode);
+void fs_insert_filesystem(struct filesystem* filesystem);
+struct filesystem* file_resolve(struct disk* disk);
 
 #endif

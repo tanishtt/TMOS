@@ -15,4 +15,7 @@
 
 #define SECTOR_SIZE 512
 
+#define MAX_FILESYSTEMS 12
+#define MAX_FILE_DESCRIPTORS 512//max file open.
+
 #endif
