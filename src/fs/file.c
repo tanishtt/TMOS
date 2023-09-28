@@ -6,7 +6,7 @@
 #include "string/string.h"
 #include "kernel.h"
 #include "fat/fat16.h"
-
+#include "disk/disk.h"
 
 
 struct filesystem* filesystems[MAX_FILESYSTEMS];
@@ -100,7 +100,64 @@ struct filesystem* fs_resolve(struct disk* disk)
     return fs;
 }
 
-int fopen(const char* filename, const char* mode)
+
+
+FILE_MODE file_get_mode_by_string(const char* str)
 {
-    return -EIO;
+    FILE_MODE mode =FILE_MODE_INVALID;
+    if(strncmp(str, "r", 1)==0)
+    {
+        mode=FILE_MODE_READ;
+    }
+    else if(strncmp(str,"w",1)==0)
+    {
+        mode=FILE_MODE_WRITE;
+    }
+    else if(strncmp(str, "a",1)==0)
+    {
+        mode= FILE_MODE_APPEND;
+    }
+    return mode;
+}
+
+int fopen(const char* filename, const char* mode_str)
+{
+    int res=0;
+    struct path_root* root_path =pathparser_parse(filename, NULL);
+    if(!root_path)
+    {
+        res=-EINVARG;
+        goto out;
+    }
+    //we cannot have just a root path 0:/ 
+    if(!root_path->first)
+    {
+        res=-EINVARG;
+        goto out;
+    }
+    //ensure ,the disk we are reading, exists or not.
+    struct disk* disk= disk_get(root_path->drive_no);
+    if(!disk)
+    {
+        res=-EIO;
+        goto out;
+
+    }
+    if(!disk->filesystem)
+    {
+        res=-EIO;
+        goto out;
+    }
+
+    FILE_MODE mode =file_get_mode_by_string(mode_str);
+    if(mode ==FILE_MODE_INVALID)
+    {
+        res =-EINVARG;
+        goto out;
+    }
+
+    void* descriptor_private_data = disk->filesystem->open(disk, root_path->first, mode);
+
+out:
+    return res;
 }
