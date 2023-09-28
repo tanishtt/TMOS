@@ -1,56 +1,68 @@
 ORG 0x7c00
 BITS 16
 
-start:
-    ; cli
-    ; mov ax, 0x07C0
-    ; mov ds, ax
-    ; BPB (Bios Parameter Block) starts here
-    jmp short skip_bpb_to_start ;3 bytes [7C00+0x00]
-    nop
+; cli
+; mov ax, 0x07C0
+; mov ds, ax
+; BPB (Bios Parameter Block) starts here
+jmp short skip_bpb_to_start ;3 bytes [7C00+0x00]
+nop
     
 ; OEM Identifier (8 bytes)
-oem_identifier:     ; The first 8 Bytes (3 - 10) is the version of DOS being used.
+OEMIdentifier:     ; The first 8 Bytes (3 - 10) is the version of DOS being used.
     db 'TMOS    '   ; Default value recommended by Microsoft
 
-bytes_per_sector:       ; Offset 0x0B;512 sector(value)
-    dw 512              ; 2 bytes per sector (Little-endian format)
+BytesPerSector:       ; Offset 0x0B;512 sector(value)
+    dw 0x200              ;(Little-endian format)
 
-sectors_per_cluster:    ; Offset 0x0D
-    db 1                ; 1 sector per cluster
+SectorsPerCluster:    ; Offset 0x0D
+    db 0x80                ; 128 sector per cluster
 
-reserved_sectors:       ; Offset 0x0E
-    dw 1                ; 1 reserved sector (including boot record)
+ReservedSectors:       ; Offset 0x0E
+    dw 200                ; 200 reserved sector (including boot record)
+    ;here our kernel will be, we will not keep kernel in file system. in this 200 sectors.
 
-number_of_fats:         ; Offset 0x10
-    db 2                ; 2 File Allocation Tables (FATs)
+FATCopies:         ; Offset 0x10
+    db 0x02                ; 2 File Allocation Tables (FATs)
 
-max_root_dir_entries:   ; Offset 0x11;will upddate later
-    dw 512              ; 512 entries for root directory (FAT12/FAT16)
+RootDirEntries:   ; Offset 0x11;will upddate later
+    dw 0x40              ; 64 entries for root directory (FAT16)
 
-total_sectors:          ; Offset 0x13; 0 total sectors (will be updated later)
-    dd 0                ; Large sector count is not used
+NumSectors:          ; Offset 0x13; 0 total sectors (will be updated later)
+    dw 0                ; Large sector count is not used
 
-media_descriptor:        ; Offset 0x15
-    db 0xF0             ; Media descriptor type (standard floppy)
+MediaType:        ; Offset 0x15
+    db 0xF8             ; Media descriptor type (standard harddisk)
 
-sectors_per_fat:        ; Offset 0x16;will update later
-    dw 9                ; 9 sectors per FAT (FAT12/FAT16)
+SectorsPerFat:        ; Offset 0x16;will update later
+    dw 0x100                ; 256 sectors per FAT (FAT16)
 
-sectors_per_track:      ; Offset 0x18
-    dw 18               ; 18 sectors per track
+SectorsPerTrack:      ; Offset 0x18
+    dw 0x20               ; 18 sectors per track
 
-number_of_heads:        ; Offset 0x1A
-    dw 2                ; 2 heads (sides)
+NumberOfHeads:        ; Offset 0x1A
+    dw 0x40                ; 2 heads (sides)
 
-hidden_sectors:         ; Offset 0x1C
+HiddenSectors:         ; Offset 0x1C
     dd 0                ; 0 hidden sectors (LBA of partition start)
 
 ; Large sector count for volumes with more than 65535 sectors
-large_sector_count:     ; Offset 0x20
-    dd 0                ; Initialize to 0 (will be updated if needed)
-    ; or write by omitting above => times 33 db 0
+SectorsBig:     ; Offset 0x20
+    dd 0x773594                ; Initialize to 7812500 (will be updated if needed)
+   
 ;BPB ends here.
+
+;extended BPB
+DriveNumber         db 0x80 ;harddisk
+WinNTBit            db 0x00
+Signature           db 0x29
+VolumeID            dd 0xD105
+VolumeIDString      db 'TMOS BOOT  '
+SystemIDString      db 'FAT16   '
+
+
+
+
 
 skip_bpb_to_start:
     sti
