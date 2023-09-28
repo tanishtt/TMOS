@@ -6,7 +6,7 @@
 #define EINVARG 2//invalid arguement.
 #define ENOMEM 3;//no memory
 #define EBADPATH 4//bad path in file access.
-
+#define EFSNOTUS 5//filesystem not us, not matched.
 
 
 #endif

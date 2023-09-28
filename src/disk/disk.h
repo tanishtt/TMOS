@@ -13,8 +13,11 @@ struct disk
 {
     DISK_TYPE type;
     int sector_size;
+    int id;//id of the disk;
     //here file system functionality should also be there.
     struct filesystem* filesystem;
+
+    void* fs_private;//private data of the filesystem.
 };
 
 //int disk_read_sector(int lba, int total, void* buffer);
