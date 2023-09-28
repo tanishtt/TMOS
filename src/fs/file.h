@@ -50,6 +50,6 @@ struct file_descriptor
 void fs_init();
 int fopen(const char* filename, const char* mode);
 void fs_insert_filesystem(struct filesystem* filesystem);
-struct filesystem* file_resolve(struct disk* disk);
+struct filesystem* fs_resolve(struct disk* disk);
 
 #endif

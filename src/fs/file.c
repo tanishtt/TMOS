@@ -3,11 +3,11 @@
 #include "memory/memory.h"
 #include "status.h"
 #include "memory/heap/kheap.h"
+#include "string/string.h"
+#include "kernel.h"
 
-
-
-struct filesystem* filesystems(MAX_FILESYSTEMS);
-struct file_descriptor* file_descriptors(MAX_FILE_DESCRIPTORS);
+struct filesystem* filesystems[MAX_FILESYSTEMS];
+struct file_descriptor* file_descriptors[MAX_FILE_DESCRIPTORS];
 
 //inserting file systems in the array.
 static struct filesystem** fs_get_free_filesystem()

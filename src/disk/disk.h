@@ -14,6 +14,7 @@ struct disk
     DISK_TYPE type;
     int sector_size;
     //here file system functionality should also be there.
+    struct filesystem* filesystem;
 };
 
 //int disk_read_sector(int lba, int total, void* buffer);
