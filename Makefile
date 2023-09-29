@@ -11,6 +11,8 @@ all: ./bin/boot.bin ./bin/kernel.bin $(FILES)
 	sudo mount -t vfat ./bin/os.bin /mnt/d
 #copy a file over
 	sudo cp ./hello.txt /mnt/d
+	sudo cp ./test.txt /mnt/d
+#at run time it will mount and unmount both
 	sudo umount /mnt/d
 
 

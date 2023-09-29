@@ -89,9 +89,11 @@ static struct file_descriptor* file_get_descriptor(int fd)
 
 struct filesystem* fs_resolve(struct disk* disk)
 {
+    
     struct filesystem* fs=0;
     for(int i=0;i< MAX_FILESYSTEMS; i++)
     {
+        
         if(filesystems[i] !=0 && filesystems[i]->resolve(disk) ==0)//means it can manage the disk, as it has file system type of his.
         {
             fs= filesystems[i];
@@ -126,40 +128,40 @@ int fopen(const char* filename, const char* mode_str)
     int res=0;
     struct path_root* root_path =pathparser_parse(filename, NULL);
     if(!root_path)
-    {
+    {print("aa4");
         res=-EINVARG;
         goto out;
     }
     //we cannot have just a root path 0:/ 
     if(!root_path->first)
-    {
+    {print("aa5");
         res=-EINVARG;
         goto out;
     }
     //ensure ,the disk we are reading, exists or not.
     struct disk* disk= disk_get(root_path->drive_no);
     if(!disk)
-    {
+    {print("aa6");
         res=-EIO;
         goto out;
 
     }
     if(!disk->filesystem)
-    {
+    {print("aa7");
         res=-EIO;
         goto out;
     }
 
     FILE_MODE mode =file_get_mode_by_string(mode_str);
     if(mode ==FILE_MODE_INVALID)
-    {
+    {print("aa8");
         res =-EINVARG;
         goto out;
     }
 
     void* descriptor_private_data = disk->filesystem->open(disk, root_path->first, mode);
     if(ISERR(descriptor_private_data))
-    {
+    {print("aa9");
         res= ERROR_I(descriptor_private_data);
         goto out;
     }
@@ -167,7 +169,7 @@ int fopen(const char* filename, const char* mode_str)
     struct file_descriptor* desc =0;
     res= file_new_descriptor(&desc);
     if(res<0)
-    {
+    {print("aa10");
         goto out;
     }
     desc->filesystem= disk->filesystem;
@@ -181,5 +183,31 @@ out:
     {//fopen should not return negative values.
         res=0;
     }
+    return res;
+}
+
+
+////////////
+
+int fread(void* ptr, uint32_t size, uint32_t nmemb, int fd)
+{
+    int res=0;
+    if(size==0 || nmemb ==0 ||fd<1)
+    {//file descriptor less than 1.
+        res= -EINVARG;
+        goto out;
+    }
+    
+
+    struct file_descriptor* desc =file_get_descriptor(fd);
+    if(!desc)
+    {
+        res=-EINVARG;
+        goto out;
+    }
+    res= desc->filesystem->read(desc->disk, desc->private, size, nmemb,(char*)ptr);
+
+
+out:
     return res;
 }

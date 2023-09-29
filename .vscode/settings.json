@@ -2,7 +2,8 @@
     "files.associations": {
         "inttypes.h": "c",
         "stdint.h": "c",
-        "string.h": "c"
+        "string.h": "c",
+        "streamer.h": "c"
     },
     "C_Cpp.dimInactiveRegions": false,
     "cmake.configureOnOpen": false

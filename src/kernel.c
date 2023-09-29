@@ -89,11 +89,13 @@ void kernel_main()
     kheap_init();
     print("\n->in kernel.c\n->heap initialized\n");
 
+    //initialize filesystem.
+    fs_init();
+
     //search and initialize the disk
     disk_search_and_init();
 
-    //initialize filesystem.
-    fs_init();
+    
 
     idt_init();
     print("\n->in kernel.c\n->idt initialized\n");
@@ -112,14 +114,26 @@ void kernel_main()
     //enable the system interrupts
     enable_interrupts();
 
-    struct path_root* root_path =pathparser_parse("0:/bin/shell.exe",NULL);
-
-    if(root_path){}
+int fd= fopen("0:/test.txt","r");
+if(fd)
+{
+    print("we opened hello.txt file \n");
+}
+else
+{
+    print("not able to open hello.txt \n");
+}
+while(1){}
 
 
     //just for testing...
 
+//..............
+    // struct path_root* root_path =pathparser_parse("0:/bin/shell.exe",NULL);
 
+    // if(root_path){}
+
+//..............
     // char* ptr= kzalloc(4096);
     // paging_set(paging_4GB_chunk_get_directory(kernel_chunk), (void*) 0x1000, (uint32_t)ptr |PAGING_ACCESS_FROM_ALL| PAGING_IS_WRITABLE| PAGING_WRITE_THROUGH);
 
@@ -130,7 +144,7 @@ void kernel_main()
 
     // print(ptr);
 
-
+//..............
     // void* ptr=kmalloc(50);//0x1000000
     // void* ptr2=kmalloc(5000);//0x1001000
     // void* ptr3=kmalloc(5746);//0x1003000
