@@ -8,6 +8,6 @@
 #define EBADPATH 4//bad path in file access.
 #define EFSNOTUS 5//filesystem not us, not matched.
 #define ERDONLY 6 //read only error.
-
+#define EUNIMP 7//unimplemented.
 
 #endif

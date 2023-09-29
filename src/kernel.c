@@ -118,6 +118,10 @@ int fd= fopen("0:/test.txt","r");
 if(fd)
 {
     print("we opened hello.txt file \n");
+    char buff[30];
+    fseek(fd, 2, SEEK_SET);
+    fread(buff, 30, 1, fd);
+    print(buff);
 }
 else
 {
