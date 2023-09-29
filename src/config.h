@@ -19,4 +19,6 @@
 #define MAX_FILE_DESCRIPTORS 512 
 //max file open.
 
+#define MAX_PATH 108//max file length.
+
 #endif
