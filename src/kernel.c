@@ -13,6 +13,7 @@
 #include "gdt/gdt.h"
 #include "config.h"
 #include "memory/memory.h"
+#include "task/tss.h"
 
 
 
@@ -91,11 +92,16 @@ void panic(const char* msg)
     while(1){}
 }
 
+struct tss tss;
+
 struct gdt gdt_real[TMOS_TOTAL_GDT_SEGMENTS];
 struct gdt_structured gdt_structured[TMOS_TOTAL_GDT_SEGMENTS]={
-    {.base =0x00, .limit =0x00, .type=0x00},        //null segment
-    {.base =0x00, .limit =0xffffffff, .type=0x9a},  //kernel code segment
-    {.base =0x00, .limit =0xffffffff, .type=0x92}   //kernel data segment
+    {.base =0x00, .limit =0x00, .type=0x00},       //null segment
+    {.base =0x00, .limit =0xffffffff, .type=0x9a}, //kernel code segment
+    {.base =0x00, .limit =0xffffffff, .type=0x92}, //kernel data segment
+    {.base =0x00, .limit =0xffffffff, .type=0xf8}, //user code segment.
+    {.base =0x00, .limit =0xffffffff, .type=0xf2}, //user data segment.
+    {.base =(uint32_t)&tss, .limit =sizeof(tss), .type=0xe9} //tss segment.
 
 };
 
@@ -119,10 +125,18 @@ void kernel_main()
     disk_search_and_init();
 
     
-
     idt_init();
     print("\n->in kernel.c\n->idt initialized\n");
     
+    //set the tss.
+    memset(&tss, 0x00, sizeof(tss));
+    tss.esp0 =0x600000;
+    tss.ss0 =KERNEL_DATA_SELECTOR;
+
+    //load the tss
+    tss_load(0x28);//0x28 = offset in gdt real.
+    
+
     kernel_chunk =paging_new_4GB(PAGING_IS_WRITABLE |PAGING_IS_PRESENT |PAGING_ACCESS_FROM_ALL);
     print("\n->in kernel.c\n->paging setup\n");
     //setting up paging
@@ -140,14 +154,14 @@ void kernel_main()
 int fd= fopen("0:/test.txt","r");
 if(fd)
 {
-    // print("we opened hello.txt file \n");
-    // char buff[30];
-    // fseek(fd, 2, SEEK_SET);
-    // fread(buff, 30, 1, fd);
-    // print(buff);
+    print("we opened hello.txt file \n");
+    char buff[30];
+    fseek(fd, 2, SEEK_SET);
+    fread(buff, 30, 1, fd);
+    print(buff);
 
-    struct file_stat s;
-    fstat(fd,&s);
+    // struct file_stat s;
+    // fstat(fd,&s);
     fclose(fd);
 }
 else
