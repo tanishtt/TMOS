@@ -3,7 +3,8 @@
         "inttypes.h": "c",
         "stdint.h": "c",
         "string.h": "c",
-        "streamer.h": "c"
+        "streamer.h": "c",
+        "paging.h": "c"
     },
     "C_Cpp.dimInactiveRegions": false,
     "cmake.configureOnOpen": false
