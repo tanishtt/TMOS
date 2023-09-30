@@ -10,6 +10,9 @@
 #include "string/string.h"
 #include "disk/streamer.h"
 #include "fs/file.h"
+#include "gdt/gdt.h"
+#include "config.h"
+#include "memory/memory.h"
 
 
 
@@ -88,9 +91,23 @@ void panic(const char* msg)
     while(1){}
 }
 
+struct gdt gdt_real[TMOS_TOTAL_GDT_SEGMENTS];
+struct gdt_structured gdt_structured[TMOS_TOTAL_GDT_SEGMENTS]={
+    {.base =0x00, .limit =0x00, .type=0x00},        //null segment
+    {.base =0x00, .limit =0xffffffff, .type=0x9a},  //kernel code segment
+    {.base =0x00, .limit =0xffffffff, .type=0x92}   //kernel data segment
+
+};
+
 void kernel_main()
 {
     terminal_initialize();
+
+    memset(gdt_real, 0x00, sizeof(gdt_real));
+    gdt_structured_to_gdt(gdt_real, gdt_structured, TMOS_TOTAL_GDT_SEGMENTS);
+
+    //loading the gdt.
+    gdt_load(gdt_real, sizeof(gdt_real));
 
     kheap_init();
     print("\n->in kernel.c\n->heap initialized\n");

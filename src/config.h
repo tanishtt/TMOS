@@ -21,4 +21,6 @@
 
 #define MAX_PATH 108//max file length.
 
+#define TMOS_TOTAL_GDT_SEGMENTS 3
+
 #endif
