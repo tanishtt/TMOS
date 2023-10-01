@@ -92,6 +92,13 @@ void panic(const char* msg)
     while(1){}
 }
 
+void kernel_page()
+{
+    //switch the page directory and registers to kernel page directory and registers.
+    kernel_registers();
+    paging_switch(kernel_chunk);
+}
+
 struct tss tss;
 
 struct gdt gdt_real[TMOS_TOTAL_GDT_SEGMENTS];
