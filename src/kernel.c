@@ -141,7 +141,7 @@ void kernel_main()
     print("\n->in kernel.c\n->paging setup\n");
     //setting up paging
 
-    paging_switch(paging_4GB_chunk_get_directory(kernel_chunk));
+    paging_switch(kernel_chunk);
     //put address of page table directory table in cr3.
     //switch to kernel paging.
 

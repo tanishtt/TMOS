@@ -110,7 +110,7 @@ int task_switch(struct task* task)
 {
     //this-> task will be pointed now, all page directory and everything will be of this ->task now.
     current_task=task;
-    paging_switch(task->page_directory->directory_entry);
+    paging_switch(task->page_directory);
     return 0;
 }
 
