@@ -2,7 +2,7 @@ FILES = ./build/kernel.o ./build/kernel.c.o ./build/disk/disk.o ./build/disk/str
 INCLUDES = -I./src
 FLAGS = -g -ffreestanding -falign-jumps -falign-functions -falign-loops -fstrength-reduce -fomit-frame-pointer -finline-functions -Wno-unused-function -fno-builtin -Werror -Wno-unused-label -Wno-cpp -Wno-unused-parameter -nostdlib -nostartfiles -nodefaultlibs -Wall -O0 -Iinc 
 
-all: ./bin/boot.bin ./bin/kernel.bin $(FILES)
+all: ./bin/boot.bin ./bin/kernel.bin user_programs
 	rm -rf ./bin/os.bin
 	dd if=./bin/boot.bin >> ./bin/os.bin
 	dd if=./bin/kernel.bin >> ./bin/os.bin
@@ -141,8 +141,17 @@ all: ./bin/boot.bin ./bin/kernel.bin $(FILES)
 
 
 #.....tasks ends here.
+#.....programs
+
+user_programs:
+	cd ./programs/program1 && $(MAKE) all
+
+user_programs_clean:
+	cd ./programs/program1 && $(MAKE) clean
+
+#.....programs ends here.
 # Clean up intermediate and output files
-clean:
+clean:user_programs_clean
 	rm -Rf ./build/*.o ./bin/*.bin ./build/*.asm.o
 #./bin/boot.bin ./bin/boot.tmp ./build/*.o
 
