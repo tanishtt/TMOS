@@ -9,5 +9,7 @@
 #define EFSNOTUS 5//filesystem not us, not matched.
 #define ERDONLY 6 //read only error.
 #define EUNIMP 7//unimplemented.
+#define EINSTKN 8// ins taken
+
 
 #endif

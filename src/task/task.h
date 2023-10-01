@@ -23,6 +23,8 @@ struct registers
 };
 
 
+struct process;
+
 //reopresent a task;
 struct task
 {
@@ -32,6 +34,9 @@ struct task
     //registers of the task when the task is not running.
     struct registers registers;
 
+    //task of the process.
+    struct process* process;
+
     //next task in the linked list(queue)
     struct task* next;
 
@@ -40,10 +45,16 @@ struct task
 
 };
 
-struct task* task_new();
+struct task* task_new(struct process* process);
 struct task* task_current();
 int task_free(struct task* task);
 struct task* task_get_next();
+
+
+
+void task_return(struct registers* regs);
+void restore_general_purpose_registers(struct registers* regs);
+void user_registers();
 
 
 #endif

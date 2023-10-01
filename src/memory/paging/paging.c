@@ -51,7 +51,7 @@ void paging_free_4GB(struct paging_4GB_chunk* chunk)
     {
         uint32_t entry =chunk->directory_entry[i];
         uint32_t* table =(uint32_t*)(entry &0xfffff000);
-        
+
         kfree(table);
     }
     //finally delete the 4gb chunk.
@@ -111,5 +111,73 @@ int paging_set(uint32_t* directory, void* virtAddr, uint32_t val)
     return 0;
 }
 
+void* paging_align_address(void* ptr)
+{
+    if ((uint32_t)ptr % PAGING_PAGE_SIZE)
+    {
+        return (void*)((uint32_t)ptr + PAGING_PAGE_SIZE - ((uint32_t)ptr % PAGING_PAGE_SIZE));
+    }
 
+    return ptr;
+}
+
+int paging_map(uint32_t* directory, void* virt, void* phys, int flags)
+{
+    if(((unsigned int)virt %PAGING_PAGE_SIZE) || ((unsigned int)phys % PAGING_PAGE_SIZE))
+    {
+        return -EINVARG;
+
+    }
+    return paging_set(directory, virt, (uint32_t)phys|flags);
+    
+}
+
+int paging_map_range(uint32_t* directory, void* virt, void* phys, int count, int flags)
+{
+   int res=0;
+   for(int i=0;i< count;i++)
+   {
+        res =paging_map(directory, virt, phys, flags);
+        if(res ==0)
+        {
+            break;
+        }
+        virt+= PAGING_PAGE_SIZE;
+        phys+= PAGING_PAGE_SIZE;
+   }
+   return res;
+}
+
+int paging_map_to(uint32_t* directory, void* virt, void* phys, void* phys_end, int flags)
+{
+    int res=0;
+    if((uint32_t)virt% PAGING_PAGE_SIZE)
+    {
+        res =-EINVARG;
+        goto out;
+    }
+    if((uint32_t)phys % PAGING_PAGE_SIZE)
+    {
+        res =-EINVARG;
+        goto out;
+    }
+    if((uint32_t)phys_end % PAGING_PAGE_SIZE)
+    {
+        res =-EINVARG;
+        goto out;
+    }
+    if((uint32_t)phys_end < (uint32_t)phys)
+    {
+        res =-EINVARG;
+        goto out;
+    }
+
+    uint32_t total_bytes =phys_end- phys;
+    int total_pages =total_bytes/ PAGING_PAGE_SIZE;
+    res =paging_map_range(directory, virt, phys, total_pages, flags);
+
+
+out:
+    return res;
+}
 
