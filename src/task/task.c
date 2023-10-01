@@ -106,6 +106,34 @@ int task_free(struct task* task)
     return 0;
 }
 
+int task_switch(struct task* task)
+{
+    //this-> task will be pointed now, all page directory and everything will be of this ->task now.
+    current_task=task;
+    paging_switch(task->page_directory->directory_entry);
+    return 0;
+}
+
+int task_page()
+{
+    user_registers();
+    task_switch(current_task);
+    return 0;
+}
+
+void task_run_first_ever_task()
+{
+    if(!current_task)
+    {
+        panic("void task_run_first_ever_task() : no current task exists.");
+
+    }
+
+    task_switch(task_head);
+    task_return(&task_head->registers);
+
+}
+
 int task_init(struct task* task, struct process* process)
 {
     memset(task, 0, sizeof(struct task));
