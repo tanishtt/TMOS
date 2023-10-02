@@ -14,8 +14,10 @@
 #include "config.h"
 #include "memory/memory.h"
 #include "task/tss.h"
-
-
+#include "isr80h/isr80h.h"
+#include "status.h"
+#include "task/task.h"
+#include "task/process.h"
 
 uint16_t* video_mem = NULL;
 uint16_t terminal_row = 0;
@@ -156,26 +158,41 @@ void kernel_main()
     //enable paging.
 
     //enable the system interrupts
-    enable_interrupts();
+    //enable_interrupts();
 
-int fd= fopen("0:/test.txt","r");
-if(fd)
-{
-    print("we opened hello.txt file \n");
-    char buff[30];
-    fseek(fd, 2, SEEK_SET);
-    fread(buff, 30, 1, fd);
-    print(buff);
+     //register the kernel commands
+    isr80h_register_commands();
 
-    // struct file_stat s;
-    // fstat(fd,&s);
-    fclose(fd);
-}
-else
-{
-    print("not able to open hello.txt \n");
-}
-while(1){}
+    struct process* process = 0;
+    int res = process_load("0:/prog1.bin", &process);
+    if (res != ALL_OK)
+    {
+        panic("Failed to load prog1.bin\n");
+    }
+    else{
+        print("OPENED PROG1.BIN\n");
+    }
+    task_run_first_ever_task();
+    while(1) {}
+//print("lll");
+// int fd= fopen("0:/hello.txt","r");
+// if(fd)
+// {
+//     print("we opened hello.txt file \n");
+//     char buff[30];
+//     fseek(fd, 2, SEEK_SET);
+//     fread(buff, 30, 1, fd);
+//     print(buff);
+
+//     // struct file_stat s;
+//     // fstat(fd,&s);
+//     fclose(fd);
+// }
+// else
+// {
+//     print("not able to open hello.txt \n");
+// }
+// while(1){}
 
 
     //just for testing...

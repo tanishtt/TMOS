@@ -4,7 +4,10 @@
         "stdint.h": "c",
         "string.h": "c",
         "streamer.h": "c",
-        "paging.h": "c"
+        "paging.h": "c",
+        "config.h": "c",
+        "idt.h": "c",
+        "kernel.h": "c"
     },
     "C_Cpp.dimInactiveRegions": false,
     "cmake.configureOnOpen": false

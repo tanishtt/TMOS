@@ -1,6 +1,7 @@
-FILES = ./build/kernel.o ./build/kernel.c.o ./build/disk/disk.o ./build/disk/streamer.o ./build/task/tss.asm.o ./build/task/task.o ./build/task/task.asm.o ./build/task/process.o ./build/fs/pparser.o ./build/fs/file.o ./build/fs/fat/fat16.o ./build/string/string.o ./build/idt/idt.asm.o ./build/idt/idt.o ./build/memory/memory.o ./build/io/io.asm.o ./build/gdt/gdt.o ./build/gdt/gdt.asm.o ./build/memory/heap/heap.o ./build/memory/heap/kheap.o ./build/memory/paging/paging.o ./build/memory/paging/paging.asm.o
+FILES = ./build/kernel.o ./build/kernel.c.o ./build/disk/disk.o ./build/disk/streamer.o ./build/task/tss.asm.o ./build/task/task.o ./build/task/task.asm.o ./build/task/process.o ./build/isr80h/isr80h.o ./build/isr80h/misc.o ./build/fs/pparser.o ./build/fs/file.o ./build/fs/fat/fat16.o ./build/string/string.o ./build/idt/idt.asm.o ./build/idt/idt.o ./build/memory/memory.o ./build/io/io.asm.o ./build/gdt/gdt.o ./build/gdt/gdt.asm.o ./build/memory/heap/heap.o ./build/memory/heap/kheap.o ./build/memory/paging/paging.o ./build/memory/paging/paging.asm.o
 INCLUDES = -I./src
 FLAGS = -g -ffreestanding -falign-jumps -falign-functions -falign-loops -fstrength-reduce -fomit-frame-pointer -finline-functions -Wno-unused-function -fno-builtin -Werror -Wno-unused-label -Wno-cpp -Wno-unused-parameter -nostdlib -nostartfiles -nodefaultlibs -Wall -O0 -Iinc 
+#MAKE = make
 
 all: ./bin/boot.bin ./bin/kernel.bin user_programs
 	rm -rf ./bin/os.bin
@@ -11,7 +12,8 @@ all: ./bin/boot.bin ./bin/kernel.bin user_programs
 	sudo mount -t vfat ./bin/os.bin /mnt/d
 #copy a file over
 	sudo cp ./hello.txt /mnt/d
-	sudo cp ./test.txt /mnt/d
+#sudo cp ./test.txt /mnt/d
+	sudo cp ./programs/prog1/prog1.bin /mnt/d
 #at run time it will mount and unmount both
 	sudo umount /mnt/d
 
@@ -144,12 +146,22 @@ all: ./bin/boot.bin ./bin/kernel.bin user_programs
 #.....programs
 
 user_programs:
-	cd ./programs/program1 && $(MAKE) all
+	cd ./programs/prog1 && $(MAKE) all
 
 user_programs_clean:
-	cd ./programs/program1 && $(MAKE) clean
+	cd ./programs/prog1 && $(MAKE) clean
 
 #.....programs ends here.
+#.....isr80h
+
+./build/isr80h/isr80h.o: ./src/isr80h/isr80h.c
+	i686-elf-gcc $(INCLUDES) -I./src/isr80h $(FLAGS) -std=gnu99 -c ./src/isr80h/isr80h.c -o ./build/isr80h/isr80h.o
+
+./build/isr80h/misc.o: ./src/isr80h/misc.c
+	i686-elf-gcc $(INCLUDES) -I./src/isr80h $(FLAGS) -std=gnu99 -c ./src/isr80h/misc.c -o ./build/isr80h/misc.o
+
+
+#.....isr80h ends here.
 # Clean up intermediate and output files
 clean:user_programs_clean
 	rm -Rf ./build/*.o ./bin/*.bin ./build/*.asm.o

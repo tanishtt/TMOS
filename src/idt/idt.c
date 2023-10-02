@@ -60,7 +60,7 @@ void idt_init()
 
 void isr80h_register_command(int command_id, ISR80H_COMMAND command)
 {
-    if(command_id <=0|| command_id >=TMOS_MAX_ISR80H_COMMANDS)
+    if(command_id <0|| command_id >=TMOS_MAX_ISR80H_COMMANDS)
     {
         panic("the command is out of bound\n");
     }
@@ -77,7 +77,7 @@ void* isr80h_handler_command(int command, struct interrupt_frame* frame)
 {
     void* result=0;
 
-    if(command <=0 || command >=TMOS_MAX_ISR80H_COMMANDS)
+    if(command <0 || command >=TMOS_MAX_ISR80H_COMMANDS)
     {
         //invalid commands.
         return 0;
@@ -102,4 +102,5 @@ void* isr80h_handler(int command, struct interrupt_frame* frame)
     task_page();
     return res;
 }
+
 

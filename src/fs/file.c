@@ -131,7 +131,8 @@ FILE_MODE file_get_mode_by_string(const char* str)
 }
 
 int fopen(const char* filename, const char* mode_str)
-{
+{print(filename);
+print("\n");
     int res=0;
     struct path_root* root_path =pathparser_parse(filename, NULL);
     if(!root_path)
@@ -168,7 +169,7 @@ int fopen(const char* filename, const char* mode_str)
 
     void* descriptor_private_data = disk->filesystem->open(disk, root_path->first, mode);
     if(ISERR(descriptor_private_data))
-    {print("aa9");
+    {print("aa9\n");
         res= ERROR_I(descriptor_private_data);
         goto out;
     }
@@ -270,3 +271,9 @@ int fread(void* ptr, uint32_t size, uint32_t nmemb, int fd)
 out:
     return res;
 }
+
+
+
+
+
+
