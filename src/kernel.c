@@ -185,7 +185,7 @@ void kernel_main()
         print("OPENED PROG1.BIN\n");
     }
 
-    keyboard_push('A');
+    //keyboard_push('A');
     task_run_first_ever_task();
     while(1) {}
 //print("lll");
