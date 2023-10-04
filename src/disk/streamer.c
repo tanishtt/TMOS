@@ -26,9 +26,18 @@ int diskstreamer_seek(struct disk_stream* stream, int pos)
 
 int diskstreamer_read(struct disk_stream* stream, void* out, int total)
 {
+    
     int sector = stream->pos / SECTOR_SIZE;
     int offset =stream->pos % SECTOR_SIZE;
+
+    int total_to_read =total;
+    bool overflow =(offset+ total_to_read) >=SECTOR_SIZE;
     char buff[SECTOR_SIZE];
+    //after 512, it will read recursively.
+    if(overflow)
+    {
+        total_to_read -= (offset +total_to_read) - SECTOR_SIZE;
+    }
 
     int res =disk_read_block(stream->disk, sector, 1, buff);
     if(res<0)
@@ -36,7 +45,7 @@ int diskstreamer_read(struct disk_stream* stream, void* out, int total)
         goto out;
     }
 
-    int total_to_read =total> SECTOR_SIZE ? SECTOR_SIZE : total;
+    //int total_to_read =total> SECTOR_SIZE ? SECTOR_SIZE : total;
 
     for(int i=0;i <total_to_read ;i++)
     {
@@ -45,9 +54,9 @@ int diskstreamer_read(struct disk_stream* stream, void* out, int total)
 
     stream->pos += total_to_read;
     //recurcively reading the number of bytes in 512bytes part by part.
-    if(total >SECTOR_SIZE)
+    if(overflow)
     {
-        res = diskstreamer_read(stream, out, total-SECTOR_SIZE);
+        res = diskstreamer_read(stream, out, total-total_to_read);
     }
 out:
     return res;
