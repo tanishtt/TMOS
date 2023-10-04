@@ -8,7 +8,10 @@ SECTIONS
     {
         *(.text)
     }
-
+    .asm : ALIGN(4096)
+    {
+        *(.asm)
+    }
     .rodata : ALIGN(4096)/*read-only data, such as constant values or string literals.*/
     {
         *(.rodata)
@@ -25,9 +28,6 @@ SECTIONS
         *(.bss)
     }
 
-    .asm : ALIGN(4096)
-    {
-        *(.asm)
-    }
+    
     /*The actual memory addresses of the sections (.text, .data, .bss, etc.) are determined by the loader or linker at runtime, based on the starting address (1M) */
 }
