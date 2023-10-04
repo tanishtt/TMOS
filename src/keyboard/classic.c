@@ -3,7 +3,8 @@
 #include <stdint.h>
 #include "io/io.h"
 #include <stddef.h>
-
+#include "kernel.h"
+#include "idt/idt.h"
 
 //keyboard just passes scancodes.
 int classic_keyboard_init();
@@ -44,8 +45,11 @@ uint8_t classic_keyboard_scancode_to_char(uint8_t scancode)
 }
 
 void classic_keyboard_handle_interrupt()
-{
-
+{//pushes the keys in the buffer.
+    kernel_page();
+    uint8_t scancode =0;
+    scancode =insb(KEYBOARD_INPUT_PORT);
+    insb(KEYBOARD_INPUT_PORT);
 }
 
 struct keyboard* classic_init()

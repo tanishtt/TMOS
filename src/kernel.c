@@ -116,6 +116,11 @@ struct gdt_structured gdt_structured[TMOS_TOTAL_GDT_SEGMENTS]={
 
 };
 
+void pic_timer_callback(struct interrupt_frame* frame)
+{
+    print("timer activated\n");
+}
+
 void kernel_main()
 {
     terminal_initialize();
@@ -168,10 +173,10 @@ void kernel_main()
     //initialize the keyboard.
     keyboard_init();
 
-    
+    idt_register_interrupt_callback(0x20, pic_timer_callback);
 
     struct process* process = 0;
-    int res = process_load("0:/prog1.bin", &process);
+    int res = process_load_switch("0:/prog1.bin", &process);
     if (res != ALL_OK)
     {
         panic("Failed to load prog1.bin\n");
@@ -179,6 +184,8 @@ void kernel_main()
     else{
         print("OPENED PROG1.BIN\n");
     }
+
+    keyboard_push('A');
     task_run_first_ever_task();
     while(1) {}
 //print("lll");
