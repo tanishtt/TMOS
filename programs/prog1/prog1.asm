@@ -9,14 +9,16 @@ _start:
     ; mov eax, 0;eax= command, here ex command 0
     ; int 0x80
     ; add esp, 8
-        
+
+
+_keygetputloop:
     call getkey
-    push message
-    mov eax, 1
+    push eax
+    mov eax, 3;putting char from terminal
     int 0x80
     add esp, 4
 
-    jmp $
+    jmp _keygetputloop
 
 getkey:
     mov eax, 2;command to getkey.
