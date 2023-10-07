@@ -1,4 +1,4 @@
-FILES = ./build/kernel.o ./build/kernel.c.o ./build/disk/disk.o ./build/disk/streamer.o ./build/task/tss.asm.o ./build/task/task.o ./build/task/task.asm.o ./build/task/process.o ./build/isr80h/isr80h.o ./build/keyboard/keyboard.o ./build/keyboard/classic.o ./build/isr80h/misc.o ./build/isr80h/io.o ./build/fs/pparser.o ./build/fs/file.o ./build/fs/fat/fat16.o ./build/string/string.o ./build/idt/idt.asm.o ./build/idt/idt.o ./build/memory/memory.o ./build/io/io.asm.o ./build/gdt/gdt.o ./build/gdt/gdt.asm.o ./build/memory/heap/heap.o ./build/memory/heap/kheap.o ./build/memory/paging/paging.o ./build/memory/paging/paging.asm.o 
+FILES = ./build/kernel.o ./build/kernel.c.o ./build/loader/formats/elf.o ./build/loader/formats/elfloader.o ./build/disk/disk.o ./build/disk/streamer.o ./build/task/tss.asm.o ./build/task/task.o ./build/task/task.asm.o ./build/task/process.o ./build/isr80h/isr80h.o ./build/keyboard/keyboard.o ./build/keyboard/classic.o ./build/isr80h/misc.o ./build/isr80h/io.o ./build/fs/pparser.o ./build/fs/file.o ./build/fs/fat/fat16.o ./build/string/string.o ./build/idt/idt.asm.o ./build/idt/idt.o ./build/memory/memory.o ./build/io/io.asm.o ./build/gdt/gdt.o ./build/gdt/gdt.asm.o ./build/memory/heap/heap.o ./build/memory/heap/kheap.o ./build/memory/paging/paging.o ./build/memory/paging/paging.asm.o 
 INCLUDES = -I./src
 FLAGS = -g -ffreestanding -falign-jumps -falign-functions -falign-loops -fstrength-reduce -fomit-frame-pointer -finline-functions -Wno-unused-function -fno-builtin -Werror -Wno-unused-label -Wno-cpp -Wno-unused-parameter -nostdlib -nostartfiles -nodefaultlibs -Wall -O0 -Iinc 
 #MAKE = make
@@ -13,7 +13,7 @@ all: ./bin/boot.bin ./bin/kernel.bin user_programs
 #copy a file over
 	sudo cp ./hello.txt /mnt/d
 #sudo cp ./test.txt /mnt/d
-	sudo cp ./programs/prog1/prog1.bin /mnt/d
+	sudo cp ./programs/prog1/prog1.elf /mnt/d
 #at run time it will mount and unmount both
 	sudo umount /mnt/d
 
@@ -175,7 +175,16 @@ user_programs_clean:
 
 
 #.....keyboard ends here.
+#.....elf
 
+./build/loader/formats/elfloader.o: ./src/loader/formats/elfloader.c
+	i686-elf-gcc $(INCLUDES) -I./src/loader/formats $(FLAGS) -std=gnu99 -c ./src/loader/formats/elfloader.c -o ./build/loader/formats/elfloader.o
+
+./build/loader/formats/elf.o: ./src/loader/formats/elf.c
+	i686-elf-gcc $(INCLUDES) -I./src/loader/formats $(FLAGS) -std=gnu99 -c ./src/loader/formats/elf.c -o ./build/loader/formats/elf.o
+
+
+#.....elf_ends_here.
 
 # Clean up intermediate and output files
 clean:user_programs_clean

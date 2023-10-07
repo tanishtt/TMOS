@@ -1,5 +1,5 @@
 ENTRY(_start)/*kernel's execution begins.*/
-OUTPUT_FORMAT(binary)/*output file will be a binary file*/
+OUTPUT_FORMAT(elf32-i386)/*output file will be a elf file*/
 SECTIONS
 {
     . = 0x400000;/*current memory location pointer.

@@ -10,6 +10,6 @@
 #define ERDONLY 6 //read only error.
 #define EUNIMP 7//unimplemented.
 #define EINSTKN 8// ins taken
-
+#define EINFORMAT 9//if not in format of .elf.
 
 #endif

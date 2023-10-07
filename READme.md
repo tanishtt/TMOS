@@ -18,3 +18,8 @@ break kernel_main
 //(gdb) add-symbol-file ./build/kernelfull.o 0x100000
 
 layout asm
+
+........................
+To see, elf configuration.
+dumpelf ./prog1.elf
+readelf -a ./prog1.elf

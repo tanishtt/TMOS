@@ -3,6 +3,13 @@
 #include <stdint.h>
 #include "config.h"
 
+#define PROCESS_FILETYPE_ELF 0
+#define PROCESS_FILETYPE_BINARY 1
+
+
+typedef unsigned char PROCESS_FILETYPE;
+
+
 struct process
 {
     //process id.
@@ -17,8 +24,15 @@ struct process
     void* allocation[MAX_PROGRAM_ALLOCATIONS];
     //KEEP TRACK OF ALL THE ALLOCATION, SO THAT AT LAST WE CAN CHECK WHETHER WE HAVE FREED ALL OF THEM.
 
-    //PHYSICAL pointer to the process.
-    void* ptr;
+    PROCESS_FILETYPE filetype;
+
+    union
+    {
+        //PHYSICAL pointer to the process.
+        void* ptr;
+        struct elf_file* elf_file;
+    };
+    
 
     //physical pointer to stack memory.
     void* stack;

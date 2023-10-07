@@ -68,7 +68,7 @@ typedef uint32_t elf32_addr;//unsigned 4b
 typedef int32_t elf32_off;
 
 //program header.
-typedef struct {
+struct elf32_phdr{
     elf32_word p_type;     // Segment type (e.g., LOAD, DYNAMIC, etc.)
     elf32_off  p_offset;   // Offset of the segment in the file
     elf32_addr p_vaddr;    // Virtual address where the segment should be loaded
@@ -80,7 +80,7 @@ typedef struct {
 } __attribute__((packed));
 
 //section header.
-typedef struct {
+struct elf32_shdr{
     elf32_word  sh_name;       // offset to the section name in the section name string table
     elf32_word  sh_type;       // section type (e.g., SHT_PROGBITS, SHT_SYMTAB, etc.)
     elf32_word  sh_flags;      // section attributes (e.g., SHF_WRITE, SHF_ALLOC, etc.)
@@ -112,7 +112,7 @@ struct elf_header
     elf32_half e_shstrndx;     // index of the section header table entry containing section names
 }__attribute__((packed));
 
-struct {
+struct elf32_dyn{
     elf32_sword d_tag;      // entry type (e.g., DT_HASH, DT_STRTAB, etc.)
     union {
         elf32_word d_val;   // integer value associated with the entry
@@ -130,4 +130,8 @@ struct elf32_sym {
     elf32_half st_shndx;   // Section index where the symbol is defined or undefined
 } __attribute__((packed));
 //This elf32_sym structure is essential for the linking process, allowing the linker to resolve symbols and establish connections between different parts of an ELF file, such as functions and variables defined in different sections.
+
+void* elf_get_entry_ptr(struct elf_header* elf_header);
+uint32_t elf_get_entry(struct elf_header* elf_header);
+
 #endif
