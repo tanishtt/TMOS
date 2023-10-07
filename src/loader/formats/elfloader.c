@@ -51,12 +51,12 @@ struct elf_header* elf_header(struct elf_file* file)
 }
 
 struct elf32_shdr* elf_sheader(struct elf_header* header)
-{
+{//It calculates the address of the section header table (shdr) within the ELF file by adding the offset specified in the e_shoff field of the ELF header to the base address of the ELF header.
     return (struct elf32_shdr*)((int)header+header->e_shoff);
 }
 
 struct elf32_phdr* elf_pheader(struct elf_header* header)
-{
+{//it calculates the address of the program header table (phdr) in the ELF file by adding the offset specified in the e_phoff field to the base address of the ELF header.
     if(header->e_phoff == 0)
     {
         return 0;
@@ -66,13 +66,18 @@ struct elf32_phdr* elf_pheader(struct elf_header* header)
 }
 
 struct elf32_phdr* elf_program_header(struct elf_header* header, int index)
-{
+{//It then returns a pointer to the program header at the specified index within the program header table.
     return &elf_pheader(header)[index];
 }
 
 struct elf32_shdr* elf_section(struct elf_header* header, int index)
 {
     return &elf_sheader(header)[index];
+}
+
+void* elf_phdr_phys_addrss(struct elf_file*file , struct elf32_phdr* phdr)
+{
+    return elf_memory(file)+ phdr->p_offset;
 }
 
 char* elf_str_table(struct elf_header* header)
@@ -191,7 +196,7 @@ int elf_load(const char* filename, struct elf_file** file_out)
     fd =res;
     struct file_stat stat;
     res =fstat(fd, &stat);
-    if(res<=0)
+    if(res<0)
     {
         goto out;
     }

@@ -200,13 +200,13 @@ void kernel_main()
     //idt_register_interrupt_callback(0x20, pic_timer_callback);
 
     struct process* process = 0;
-    int res = process_load_switch("0:/prog1.bin", &process);
+    int res = process_load_switch("0:/prog1.elf", &process);
     if (res != ALL_OK)
     {
-        panic("Failed to load prog1.bin\n");
+        panic("Failed to load prog1.elf\n");
     }
     else{
-        print("OPENED PROG1.BIN\n");
+        print("OPENED PROG1.elf\n");
     }
 
     //keyboard_push('A');

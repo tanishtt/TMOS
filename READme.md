@@ -23,3 +23,5 @@ layout asm
 To see, elf configuration.
 dumpelf ./prog1.elf
 readelf -a ./prog1.elf
+ readelf -S ./prog
+  readelf -s ./prog
