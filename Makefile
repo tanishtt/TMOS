@@ -146,9 +146,11 @@ all: ./bin/boot.bin ./bin/kernel.bin user_programs
 #.....programs
 
 user_programs:
+	cd ./programs/stdlib && $(MAKE) all
 	cd ./programs/prog1 && $(MAKE) all
 
 user_programs_clean:
+	cd ./programs/stdlib && $(MAKE) clean
 	cd ./programs/prog1 && $(MAKE) clean
 
 #.....programs ends here.
