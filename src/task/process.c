@@ -11,6 +11,7 @@
 #include "loader/formats/elfloader.h"
 
 
+
 // current process that is running.
 struct process *current_process = 0;
 
@@ -64,6 +65,43 @@ void* process_malloc(struct process* process, size_t size)
     }
     process->allocation[index] =ptr;
     return ptr;
+}
+
+static bool process_is_process_pointer(struct process* process, void* ptr)
+{
+    for(int i=0; i<MAX_PROGRAM_ALLOCATIONS; i++)
+    {
+        if(process->allocation[i] ==ptr)
+        {
+            return true;
+        }
+    }
+    return false;
+}
+
+static void process_allocation_unjoin(struct process* process, void* ptr)
+{
+    for (int i =0; i <MAX_PROGRAM_ALLOCATIONS; i++)
+    {
+        if (process->allocation[i] == ptr)
+        {
+            process->allocation[i] = 0x00;
+        }
+    }
+}
+
+void process_free(struct process* process, void* ptr)
+{
+    if(!process_is_process_pointer(process, ptr))
+    {//not our pointer, so can't free.
+        return;
+    }
+    //unjoin the allocation
+    process_allocation_unjoin(process, ptr);
+
+    //we can now free the memory.
+    kfree(ptr);
+
 }
 
 int process_switch(struct process* process)

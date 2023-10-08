@@ -1,8 +1,12 @@
 [BITS 32]
 
+section .asm
+
 global print:function
 global getkey:function
 global sub_malloc:function
+global sub_free:function
+
 
 ;void print(const char* message)
 print:
@@ -35,3 +39,15 @@ sub_malloc:
     add esp, 4
     pop ebp
     ret
+
+sub_free:
+    push ebp
+    mov ebp, esp
+    mov eax, 5 ;command 5 free(Frees the allocated memory for process)
+    push dword[ebp+8] ;variable ptr
+    int 0x80
+    add esp, 4
+    pop ebp
+    ret
+
+

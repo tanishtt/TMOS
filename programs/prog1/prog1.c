@@ -13,6 +13,7 @@ int main(int argc, char** argv)
     else{
         print("not allocated\n");
     }
+    free(ptr);
     while(1){
         if(getkey()!=0)
         {
