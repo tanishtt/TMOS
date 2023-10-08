@@ -6,7 +6,7 @@ global print:function
 global getkey:function
 global sub_malloc:function
 global sub_free:function
-
+global sub_putchar:function
 
 ;void print(const char* message)
 print:
@@ -45,6 +45,17 @@ sub_free:
     mov ebp, esp
     mov eax, 5 ;command 5 free(Frees the allocated memory for process)
     push dword[ebp+8] ;variable ptr
+    int 0x80
+    add esp, 4
+    pop ebp
+    ret
+
+; void sub_putchar(char c)
+sub_putchar:
+    push ebp
+    mov ebp, esp
+    mov eax, 3 ;command putchar
+    push dword [ebp+8] ;variable c
     int 0x80
     add esp, 4
     pop ebp

@@ -1,11 +1,17 @@
 #include "function.h"
 #include "stdlib.h"
+#include "stdio.h"
+#include <stdint.h>
 
 
 int main(int argc, char** argv)
 {
     print("from main...\n");
     print(itoa(34657));
+
+    putchar('s');
+    //int i=21;
+    printf("my age is %i\n", 21);
     // void* ptr =malloc(512);
     // if(ptr)
     // {
