@@ -5,15 +5,16 @@
 int main(int argc, char** argv)
 {
     print("from main...\n");
-    void* ptr =malloc(512);
-    if(ptr)
-    {
-        print("allocated\n");
-    }
-    else{
-        print("not allocated\n");
-    }
-    free(ptr);
+    print(itoa(34657));
+    // void* ptr =malloc(512);
+    // if(ptr)
+    // {
+    //     print("allocated\n");
+    // }
+    // else{
+    //     print("not allocated\n");
+    // }
+    // free(ptr);
     while(1){
         if(getkey()!=0)
         {

@@ -203,7 +203,7 @@ static int process_map_elf(struct process* process)
         {
            flags|= PAGING_IS_WRITABLE;
         }
-        res=paging_map_to(process->task->page_directory, paging_align_to_lower_page((void*)phdr->p_vaddr), paging_align_to_lower_page(phdr_phys_address), paging_align_address(phdr_phys_address+ phdr->p_filesz),flags);//, PAGING_IS_PRESENT | PAGING_ACCESS_FROM_ALL | PAGING_IS_WRITABLE);
+        res=paging_map_to(process->task->page_directory, paging_align_to_lower_page((void*)phdr->p_vaddr), paging_align_to_lower_page(phdr_phys_address), paging_align_address(phdr_phys_address+ phdr->p_memsz),flags);//, PAGING_IS_PRESENT | PAGING_ACCESS_FROM_ALL | PAGING_IS_WRITABLE);
         if(ISERR(res))
         {
             break;
