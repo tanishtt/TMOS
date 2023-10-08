@@ -3,7 +3,7 @@
 section .asm
 
 global print:function
-global getkey:function
+global sub_getkey:function
 global sub_malloc:function
 global sub_free:function
 global sub_putchar:function
@@ -20,7 +20,7 @@ print:
     ret
 
 ;int getkey()
-getkey:
+sub_getkey:
     push ebp
     mov ebp,esp
     mov eax, 2;command getkey

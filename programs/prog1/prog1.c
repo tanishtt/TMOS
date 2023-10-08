@@ -21,11 +21,17 @@ int main(int argc, char** argv)
     //     print("not allocated\n");
     // }
     // free(ptr);
+    // sub_getkeyblock();
+    // print("test abc");
+
+    char buff[1024];
+    sub_terminal_readline(buff, sizeof(buff), true);
+    printf("%s",buff);
     while(1){
-        if(getkey()!=0)
-        {
-            print("other than 0x00 is pressed..\n");
-        }
+        // if(getkey()!=0)
+        // {
+        //     print("other than 0x00 is pressed..\n");
+        // }
     }
     return 0;
 }
