@@ -36,6 +36,36 @@ struct process *process_get(int process_id)
     return processes[process_id];
 }
 
+static int process_find_free_allocation_index(struct process* process)
+{
+    int res=-ENOMEM;
+    for(int i=0;i<MAX_PROGRAM_ALLOCATIONS; i++)
+    {
+        if(process->allocation[i] ==0)
+        {
+            res =i;
+            break;
+        }
+    }
+    return res;
+}
+
+void* process_malloc(struct process* process, size_t size)
+{
+    void* ptr= kzalloc(size);
+    if(!ptr)
+    {
+        return 0;
+    }
+    int index= process_find_free_allocation_index(process);
+    if(index<0)
+    {
+        return 0;
+    }
+    process->allocation[index] =ptr;
+    return ptr;
+}
+
 int process_switch(struct process* process)
 {
     //all process print to same terminal, like that.

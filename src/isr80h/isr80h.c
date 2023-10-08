@@ -2,6 +2,9 @@
 #include "idt/idt.h"
 #include "misc.h"
 #include "io.h"
+#include "heap.h"
+
+
 
 void isr80h_register_commands()
 {

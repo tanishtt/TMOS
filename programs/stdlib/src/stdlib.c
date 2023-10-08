@@ -3,7 +3,7 @@
 
 void* malloc(size_t size)
 {
-    return 0;
+    return sub_malloc(size);
 }
 
 void free(void* ptr)

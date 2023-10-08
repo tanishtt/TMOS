@@ -1,11 +1,13 @@
 FILES =./build/prog1.o 
 INCLUDES =-I../stdlib/src
+FLAGS =-g
+
 all:${FILES}
 #nasm -f elf ./prog1.asm -o ./build/prog1.o
 	i686-elf-gcc -g -T ./linker.ld -o ./prog1.elf -ffreestanding -O0 -nostdlib -fpic -g ${FILES} ../stdlib/stdlib.elf
 
 ./build/prog1.o: ./prog1.c
-	i686-elf-gcc ${INCLUDES} -I./$(FLAGS) -std=gnu99 -c ./prog1.c -o ./build/prog1.o
+	i686-elf-gcc ${INCLUDES} -I./ $(FLAGS) -std=gnu99 -c ./prog1.c -o ./build/prog1.o
 
 
 clean:
