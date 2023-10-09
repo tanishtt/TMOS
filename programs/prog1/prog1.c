@@ -43,10 +43,17 @@ int main(int argc, char** argv)
     // }
 
     //now user can access the memory
-    char* ptr=malloc(25);
-    strcpy(ptr, "hello sabhi log");
-    print(ptr);
-    free(ptr);
+    // char* ptr=malloc(25);
+    // strcpy(ptr, "hello sabhi log");
+    // print(ptr);
+    // free(ptr);
+
+
+    char str[] ="this is tanish.";
+    struct command_argument* root_command=sub_parse_command(str, sizeof(str));
+    printf("%s\n", root_command->argument);
+    printf("%s\n", root_command->next->argument);
+
 
     while(1){
         // if(getkey()!=0)
