@@ -11,6 +11,7 @@ void sub_free(void* ptr);
 void sub_putchar(char c);
 int sub_getkeyblock();
 void sub_terminal_readline(char *out, int max, bool output_while_typing);
+void sub_process_load_start(const char* filename);
 
 
 #endif

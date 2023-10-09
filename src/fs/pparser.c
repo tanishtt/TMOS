@@ -6,8 +6,10 @@
 #include "status.h"
 
 
-static int pathparser_path_valid_format(const char*filename)
+static int pathparser_path_valid_format(const char* filename)
 {
+    //print("pathparser_path_valid_format 1");
+    //print(filename);
     int len= strnlen(filename, TMOS_MAX_PATH);
 
     return (len>=3 && isdigit(filename[0]) && memcmp((void*)&filename[1], ":/", 2)== 0);//check 2 bytes":/" from address of filename[1] is same or not.
@@ -16,8 +18,9 @@ static int pathparser_path_valid_format(const char*filename)
 
 static int pathparser_get_drive_by_path(const char** path)
 {
+    //print(*path);print("<<-");
     if(!pathparser_path_valid_format(*path))
-    {
+    {print("pathparser_get_drive_by_path 1\n");
         return -EBADPATH;
     }
 
@@ -109,24 +112,24 @@ struct path_root* pathparser_parse(const char* path, const char* current_directo
     struct path_root* path_root =0;
 
     if(strlen(path) >TMOS_MAX_PATH)
-    {
+    {print("pathparser_parse 1");
         goto out;
     }
-
+    //print(tmp_path);print("<<");
     res= pathparser_get_drive_by_path(&tmp_path);
     if(res<0)
-    {
+    {print("pathparser_parse 2\n");
         goto out;
     }
     path_root =pathparser_create_root(res);
     if(!path_root)
-    {
+    {print("pathparser_parse 3");
         goto out;
     }
 
     struct path_part* first_part= pathparser_parse_path_part(NULL,&tmp_path);
     if(!first_part)
-    {
+    {print("pathparser_parse 4");
         goto out;
     }
 

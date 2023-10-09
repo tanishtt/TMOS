@@ -11,6 +11,8 @@ int main(int argc, char** argv)
         print("TMOS-$ ");
         char buff[1024];
         sub_terminal_readline(buff, sizeof(buff), true);
+        sub_process_load_start(buff);
+
         print("\n");
     }
     return 0;

@@ -2,7 +2,7 @@
 #include "stdlib.h"
 #include "stdio.h"
 #include <stdint.h>
-
+#include "string.h"
 
 int main(int argc, char** argv)
 {
@@ -10,8 +10,11 @@ int main(int argc, char** argv)
     //print(itoa(34657));
 
     //putchar('s');
+
     //int i=21;
-    printf("my age is %i\n", 21);
+    //printf("my age is %i\n", 21);
+
+
     // void* ptr =malloc(512);
     // if(ptr)
     // {
@@ -21,12 +24,24 @@ int main(int argc, char** argv)
     //     print("not allocated\n");
     // }
     // free(ptr);
+
+
     // sub_getkeyblock();
     // print("test abc");
 
     // char buff[1024];
     // sub_terminal_readline(buff, sizeof(buff), true);
     // printf("%s",buff);
+
+    char words[] = "this is tanish mohanta.";
+
+    const char* token = strtok(words, " ");
+    while(token)
+    {
+        printf("%s\n", token);
+        token = strtok(NULL, " ");
+    }
+
     while(1){
         // if(getkey()!=0)
         // {

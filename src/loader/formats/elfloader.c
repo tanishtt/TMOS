@@ -190,6 +190,7 @@ int elf_load(const char* filename, struct elf_file** file_out)
 
     if(res<=0)
     {
+        res=-EIO;
         goto out;
     }
 

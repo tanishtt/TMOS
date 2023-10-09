@@ -131,7 +131,7 @@ FILE_MODE file_get_mode_by_string(const char* str)
 }
 
 int fopen(const char* filename, const char* mode_str)
-{print(filename);
+{//print(filename);
 print("\n");
     int res=0;
     struct path_root* root_path =pathparser_parse(filename, NULL);

@@ -1,4 +1,4 @@
-FILES =./build/start.o ./build/function.asm.o ./build/function.o ./build/stdlib.o ./build/stdio.o
+FILES =./build/start.o ./build/function.asm.o ./build/function.o ./build/stdlib.o ./build/stdio.o ./build/string.o ./build/memory.o
 INCLUDES =-I./src
 FLAGS = -g -falign-jumps -falign-functions -falign-loops -fstrength-reduce -fomit-frame-pointer -finline-functions -Wno-unused-function -fno-builtin -Werror -Wno-unused-label -Wno-cpp -Wno-unused-parameter -nostdlib -nostartfiles -nodefaultlibs -Wall -O0 -Iinc 
 
@@ -21,6 +21,12 @@ all:${FILES}
 
 ./build/function.o: ./src/function.c
 	i686-elf-gcc ${INCLUDES} $(FLAGS) -std=gnu99 -c ./src/function.c -o ./build/function.o
+
+./build/memory.o: ./src/memory.c
+	i686-elf-gcc ${INCLUDES} $(FLAGS) -std=gnu99 -c ./src/memory.c -o ./build/memory.o
+
+./build/string.o: ./src/string.c
+	i686-elf-gcc ${INCLUDES} $(FLAGS) -std=gnu99 -c ./src/string.c -o ./build/string.o
 
 
 
