@@ -33,14 +33,20 @@ int main(int argc, char** argv)
     // sub_terminal_readline(buff, sizeof(buff), true);
     // printf("%s",buff);
 
-    char words[] = "this is tanish mohanta.";
+    // char words[] = "this is tanish mohanta.";
 
-    const char* token = strtok(words, " ");
-    while(token)
-    {
-        printf("%s\n", token);
-        token = strtok(NULL, " ");
-    }
+    // const char* token = strtok(words, " ");
+    // while(token)
+    // {
+    //     printf("%s\n", token);
+    //     token = strtok(NULL, " ");
+    // }
+
+    //now user can access the memory
+    char* ptr=malloc(25);
+    strcpy(ptr, "hello sabhi log");
+    print(ptr);
+    free(ptr);
 
     while(1){
         // if(getkey()!=0)

@@ -115,6 +115,7 @@ int task_switch(struct task* task)
 {
     //this-> task will be pointed now, all page directory and everything will be of this ->task now.
     current_task=task;
+    //print("task_switch\n");
     paging_switch(task->page_directory);
     return 0;
 }
@@ -212,6 +213,7 @@ void task_run_first_ever_task()
     }
 
     task_switch(task_head);
+    //print("task_run_first_ever_task\n");
     task_return(&task_head->registers);
 
 }

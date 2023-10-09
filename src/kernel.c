@@ -156,7 +156,7 @@ void kernel_main()
     gdt_load(gdt_real, sizeof(gdt_real));
 
     kheap_init();
-    print("\n->in kernel.c\n->heap initialized\n");
+    //print("\n->in kernel.c\n->heap initialized\n");
 
     //initialize filesystem.
     fs_init();
@@ -166,7 +166,7 @@ void kernel_main()
 
     
     idt_init();
-    print("\n->in kernel.c\n->idt initialized\n");
+    //print("\n->in kernel.c\n->idt initialized\n");
     
     //set the tss.
     memset(&tss, 0x00, sizeof(tss));
@@ -178,7 +178,7 @@ void kernel_main()
     
 
     kernel_chunk =paging_new_4GB(PAGING_IS_WRITABLE |PAGING_IS_PRESENT |PAGING_ACCESS_FROM_ALL);
-    print("\n->in kernel.c\n->paging setup\n");
+    //print("\n->in kernel.c\n->paging setup\n");
     //setting up paging
 
     paging_switch(kernel_chunk);
@@ -205,12 +205,13 @@ void kernel_main()
     {
         panic("Failed to load shell.elf\n");
     }
-    else{
-        print("OPENED shell.elf\n");
-    }
+    // else{
+    //     print("OPENED shell.elf\n");
+    // }
 
     //keyboard_push('A');
     task_run_first_ever_task();
+    print("end");
     while(1) {}
 //print("lll");
 // int fd= fopen("0:/hello.txt","r");

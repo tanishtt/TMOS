@@ -12,6 +12,12 @@
 
 typedef unsigned char PROCESS_FILETYPE;
 
+struct process_allocation
+{
+    void* ptr;
+    size_t size;
+
+};
 
 struct process
 {
@@ -24,7 +30,7 @@ struct process
     struct task* task;
 
     //THE MEMORY(MALLOC) ALLOCATION OF THE PROCESS.
-    void* allocation[MAX_PROGRAM_ALLOCATIONS];
+    struct process_allocation allocation[MAX_PROGRAM_ALLOCATIONS];
     //KEEP TRACK OF ALL THE ALLOCATION, SO THAT AT LAST WE CAN CHECK WHETHER WE HAVE FREED ALL OF THEM.
 
     PROCESS_FILETYPE filetype;

@@ -1,6 +1,7 @@
 #include "paging.h"
 #include "memory/heap/kheap.h"
 #include "status.h"
+//#include "kernel.h"
 
 void paging_load_directory(uint32_t* directory);
 
@@ -38,7 +39,7 @@ struct paging_4GB_chunk* paging_new_4GB(uint8_t flags)
 }
 
 void paging_switch(struct paging_4GB_chunk* directory)
-{   
+{   //print("paging_switch\n");
     //put address of page table directory in cr3
     paging_load_directory(directory->directory_entry);
     current_directory =directory->directory_entry;

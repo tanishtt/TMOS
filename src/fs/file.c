@@ -136,40 +136,40 @@ print("\n");
     int res=0;
     struct path_root* root_path =pathparser_parse(filename, NULL);
     if(!root_path)
-    {print("aa4");
+    {print("No such command exists 1\n");
         res=-EINVARG;
         goto out;
     }
     //we cannot have just a root path 0:/ 
     if(!root_path->first)
-    {print("aa5");
+    {print("No such command exists 2\n");
         res=-EINVARG;
         goto out;
     }
     //ensure ,the disk we are reading, exists or not.
     struct disk* disk= disk_get(root_path->drive_no);
     if(!disk)
-    {print("aa6");
+    {print("No such command exists 3\n");
         res=-EIO;
         goto out;
 
     }
     if(!disk->filesystem)
-    {print("aa7");
+    {print("No such command exists 4\n");
         res=-EIO;
         goto out;
     }
 
     FILE_MODE mode =file_get_mode_by_string(mode_str);
     if(mode ==FILE_MODE_INVALID)
-    {print("aa8");
+    {print("No such command exists 5\n");
         res =-EINVARG;
         goto out;
     }
 
     void* descriptor_private_data = disk->filesystem->open(disk, root_path->first, mode);
     if(ISERR(descriptor_private_data))
-    {print("aa9\n");
+    {print("No such command exists 6\n");
         res= ERROR_I(descriptor_private_data);
         goto out;
     }
@@ -177,7 +177,7 @@ print("\n");
     struct file_descriptor* desc =0;
     res= file_new_descriptor(&desc);
     if(res<0)
-    {print("aa10");
+    {print("No such command exists 7\n");
         goto out;
     }
     desc->filesystem= disk->filesystem;
