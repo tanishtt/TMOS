@@ -7,9 +7,9 @@
 int main(int argc, char** argv)
 {
     print("from main...\n");
-    print(itoa(34657));
+    //print(itoa(34657));
 
-    putchar('s');
+    //putchar('s');
     //int i=21;
     printf("my age is %i\n", 21);
     // void* ptr =malloc(512);
@@ -24,9 +24,9 @@ int main(int argc, char** argv)
     // sub_getkeyblock();
     // print("test abc");
 
-    char buff[1024];
-    sub_terminal_readline(buff, sizeof(buff), true);
-    printf("%s",buff);
+    // char buff[1024];
+    // sub_terminal_readline(buff, sizeof(buff), true);
+    // printf("%s",buff);
     while(1){
         // if(getkey()!=0)
         // {

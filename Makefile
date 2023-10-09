@@ -14,6 +14,7 @@ all: ./bin/boot.bin ./bin/kernel.bin user_programs
 	sudo cp ./hello.txt /mnt/d
 #sudo cp ./test.txt /mnt/d
 	sudo cp ./programs/prog1/prog1.elf /mnt/d
+	sudo cp ./programs/shell/shell.elf /mnt/d
 #at run time it will mount and unmount both
 	sudo umount /mnt/d
 
@@ -148,10 +149,13 @@ all: ./bin/boot.bin ./bin/kernel.bin user_programs
 user_programs:
 	cd ./programs/stdlib && $(MAKE) all
 	cd ./programs/prog1 && $(MAKE) all
+	cd ./programs/shell && $(MAKE) all
+
 
 user_programs_clean:
 	cd ./programs/stdlib && $(MAKE) clean
 	cd ./programs/prog1 && $(MAKE) clean
+	cd ./programs/shell && $(MAKE) clean
 
 #.....programs ends here.
 #.....isr80h
