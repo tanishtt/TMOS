@@ -8,7 +8,7 @@ global sub_malloc:function
 global sub_free:function
 global sub_putchar:function
 global sub_process_load_start:function
-
+global sub_process_get_arguments:function
 
 ;void print(const char* message)
 print:
@@ -74,4 +74,13 @@ sub_process_load_start:
     pop ebp
     ret
 
-
+;void sub_process_get_arguments(struct process_arguments* arguments)
+sub_process_get_arguments:
+    push ebp
+    mov ebp, esp
+    mov eax, 8 ;command 8 Gets the process arguments
+    push dword[ebp+8] ;variable arguments
+    int 0x80
+    add esp, 4
+    pop ebp
+    ret

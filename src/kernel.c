@@ -200,14 +200,21 @@ void kernel_main()
     //idt_register_interrupt_callback(0x20, pic_timer_callback);
 
     struct process* process = 0;
-    int res = process_load_switch("0:/shell.elf", &process);
+    int res = process_load_switch("0:/prog1.elf", &process);
     if (res != ALL_OK)
     {
-        panic("Failed to load shell.elf\n");
+        panic("Failed to load prog1.elf\n");
     }
     // else{
     //     print("OPENED shell.elf\n");
     // }
+
+    struct command_argument argument;
+    strcpy(argument.argument, "test");
+    argument.next= 0x00;
+    //test->null
+    //sending arguments to prog1.elf
+    process_inject_arguments(process, &argument);
 
     //keyboard_push('A');
     task_run_first_ever_task();
