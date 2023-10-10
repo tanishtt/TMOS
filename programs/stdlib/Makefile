@@ -1,4 +1,4 @@
-FILES =./build/start.o ./build/function.asm.o ./build/function.o ./build/stdlib.o ./build/stdio.o ./build/string.o ./build/memory.o
+FILES =./build/start.asm.o ./build/start.o ./build/function.asm.o ./build/function.o ./build/stdlib.o ./build/stdio.o ./build/string.o ./build/memory.o
 INCLUDES =-I./src
 FLAGS = -g -falign-jumps -falign-functions -falign-loops -fstrength-reduce -fomit-frame-pointer -finline-functions -Wno-unused-function -fno-builtin -Werror -Wno-unused-label -Wno-cpp -Wno-unused-parameter -nostdlib -nostartfiles -nodefaultlibs -Wall -O0 -Iinc 
 
@@ -6,8 +6,8 @@ FLAGS = -g -falign-jumps -falign-functions -falign-loops -fstrength-reduce -fomi
 all:${FILES}
 	i686-elf-ld -m elf_i386 -relocatable ${FILES} -o ./stdlib.elf
 
-./build/start.o: ./src/start.asm
-	nasm -f elf ./src/start.asm -o ./build/start.o
+./build/start.asm.o: ./src/start.asm
+	nasm -f elf ./src/start.asm -o ./build/start.asm.o
 
 ./build/function.asm.o: ./src/function.asm
 	nasm -f elf ./src/function.asm -o ./build/function.asm.o
@@ -28,6 +28,8 @@ all:${FILES}
 ./build/string.o: ./src/string.c
 	i686-elf-gcc ${INCLUDES} $(FLAGS) -std=gnu99 -c ./src/string.c -o ./build/string.o
 
+./build/start.o: ./src/start.c
+	i686-elf-gcc ${INCLUDES} $(FLAGS) -std=gnu99 -c ./src/start.c -o ./build/start.o
 
 
 clean:

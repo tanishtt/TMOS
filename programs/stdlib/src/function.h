@@ -26,6 +26,8 @@ void sub_process_load_start(const char* filename);
 
 void sub_process_get_arguments(struct process_arguments* arguments);
 
+int sub_system(struct command_argument* arguments);
+int sub_system_run(const char* command);
 
 struct command_argument* sub_parse_command(const char* command, int max);
 

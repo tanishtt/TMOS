@@ -9,6 +9,8 @@ global sub_free:function
 global sub_putchar:function
 global sub_process_load_start:function
 global sub_process_get_arguments:function
+global sub_system:function
+
 
 ;void print(const char* message)
 print:
@@ -80,6 +82,18 @@ sub_process_get_arguments:
     mov ebp, esp
     mov eax, 8 ;command 8 Gets the process arguments
     push dword[ebp+8] ;variable arguments
+    int 0x80
+    add esp, 4
+    pop ebp
+    ret
+
+
+;int sub_system(struct command_argument* arguments)
+sub_system:
+    push ebp
+    mov ebp, esp
+    mov eax, 7 ;command 7 process_system(runs a system command based on the arguments)
+    push dword[ebp+8] ;variable "arguments"
     int 0x80
     add esp, 4
     pop ebp
