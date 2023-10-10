@@ -191,12 +191,13 @@ int process_terminate(struct process* process)
 
     //free the process stack memory.
     kfree(process->stack);
-    
+
     //free the task
     task_free(process->task);
     //unlink the process from the process array.
     process_unlink(process);
 
+    print("process was terminated abruptly.\n");
 out:
     return res;
 }

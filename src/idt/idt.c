@@ -5,6 +5,7 @@
 #include "io/io.h"
 #include "task/task.h"
 #include "status.h"
+#include "task/process.h"
 
 
 struct idt_descriptor idt_decriptors[TOTAL_INTERRUPTS];
@@ -57,6 +58,13 @@ void  idt_set(int interrupt_no, void* address)
     idt_ptr->type_attributes=0xEE;//1-11-0-1110
     idt_ptr->offset_2= (uint32_t) address >> 16; //high bits
 }
+
+void idt_handle_exception()
+{
+    process_terminate(task_current()->process);
+    task_next();
+}
+
 void idt_init()
 {
     memset(idt_decriptors, 0, sizeof(idt_decriptors));//all 512 decriptors are set to 0.
@@ -64,13 +72,18 @@ void idt_init()
     idtr.limit = sizeof(idt_decriptors)-1;
     idtr.base =(uint32_t)idt_decriptors;
 
-    for(int i=0;i< TOTAL_INTERRUPTS;i++)
+    for(int i=0;i<TOTAL_INTERRUPTS;i++)
     {
         idt_set(i,interrupt_pointer_table[i]);
     }
     idt_set(0, idt_zero);
     //idt_set(0x21,int21h);
     idt_set(0x80, isr80h_wrapper);
+
+    for(int i = 0; i <0x20; i++)
+    {
+        idt_register_interrupt_callback(i, idt_handle_exception);
+    }
 
     //load the interrupt descriptor table.
     idt_load(&idtr);

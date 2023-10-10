@@ -111,6 +111,18 @@ int task_free(struct task* task)
     return 0;
 }
 
+void task_next()
+{
+    struct task* next_task =task_get_next();
+    if (!next_task)
+    {
+        panic("no more tasks!\n");
+    }
+
+    task_switch(next_task);
+    task_return(&next_task->registers);
+}
+
 int task_switch(struct task* task)
 {
     //this-> task will be pointed now, all page directory and everything will be of this ->task now.
